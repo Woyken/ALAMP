@@ -1,0 +1,39 @@
+{
+  "name": "alamp",
+  "version": "0.1.0",
+  "description": "Another lite audio manipulation project (ALAMP), relatively small package for audio cutting and fade effects",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Not yet implemented, TODO\" && exit 1",
+    "build": "tsc",
+    "build:watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Woyken/ALAMP.git"
+  },
+  "keywords": [
+    "audio",
+    "manipulate",
+    "edit",
+    "cut",
+    "crop",
+    "trim",
+    "fade",
+    "mp3"
+  ],
+  "author": "Karolis Užkuraitis (Woyken)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Woyken/ALAMP/issues"
+  },
+  "homepage": "https://github.com/Woyken/ALAMP#readme",
+  "dependencies": {
+    "lamejs": "^1.2.0"
+  },
+  "devDependencies": {
+    "tslint": "^5.20.0",
+    "tslint-config-airbnb": "^5.11.2",
+    "typescript": "^3.6.3"
+  }
+}
