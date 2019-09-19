@@ -20,36 +20,31 @@ Install with NPM
 npm install
 ```
 
-(ofcourse you can use await instead of .then.then.then...)
+(of course everything is made with promises)
 
 ```typescript
 import { Decoder, BufferManipulations, Encoder } from 'alamp';
 
 const decoder = new Decoder();
-decoder.decodeFile(file)
-    .then((buf) => {
-        const manipulator = new BufferManipulations(buf);
-        // Crop a piece of audio. From 1st second to 5th second.
-        manipulator.cut(1000, 5000);
-        // Add a fade in from beggining to 1st second.
-        manipulator.fadeIn(0, 1000);
-        // Fade out for last second.
-        manipulator.fadeIn(4000);
-        // Apply cuts and fades and get modified buffer.
-        return manipulator.apply();
-    })
-    .then((processedBuffer) => {
-        const encoder = new Encoder();
-        // Encode modified buffer to MP3 data.
-        return encoder.encodeToMP3Blob(processedBuffer, 196);
-    })
-    .then((blob) => {
-        // Your file blob is ready here.
-        download(URL.createObjectURL(blob));
-    })
-    .catch((msg) => {
-        console.log(msg);
-    });
+
+const buf = await decoder.decodeFile(file);
+
+const manipulator = new BufferManipulations(buf);
+// Crop a piece of audio. From 1st second to 5th second.
+manipulator.cut(1000, 5000);
+// Add a fade in from beggining to 1st second.
+manipulator.fadeIn(0, 1000);
+// Fade out to start 1 second before end.
+manipulator.fadeOut(1000);
+// Apply cuts and fades and get modified buffer.
+const processedBuf = await manipulator.apply();
+
+const encoder = new Encoder();
+// Encode modified buffer to MP3 data.
+const blob = await encoder.encodeToMP3Blob(processedBuffer, 196);
+
+// Your file blob is ready here.
+download(URL.createObjectURL(blob));
 ```
 
 ## What does it do

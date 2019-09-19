@@ -2,7 +2,15 @@ import { timeoutFor } from './timeoutHelper';
 import { Fader } from './fader';
 
 export enum FadeType {
+    /**
+     * Linear fading.
+     */
     Linear,
+    /**
+     * @todo
+     * Not implemented yet.
+     * Exponential fading.
+     */
     Exponential,
 }
 
@@ -77,8 +85,10 @@ export class BufferManipulations {
     /**
      * Set fading in location for the buffer.
      * Will be appllied on "apply".
-     * @param startMS start time in miliseconds.
-     * @param endMS end time in miliseconds.
+     * @param startMS start time in miliseconds from end of the audio.
+     *      If undefined set to start of audio.
+     * @param endMS end time in miliseconds from end of the audio.
+     *      If undefined set to end of audio.
      * @returns true if provided arguments were within boundaries.
      */
     public fadeOut(
@@ -142,13 +152,15 @@ export class BufferManipulations {
         let fadeOutFader: Fader | undefined;
         if (this.fadeOutStartMS !== undefined || this.fadeOutEndMS !== undefined) {
 
+            // Start frame calculated from audio ending.
             const startFrame = this.fadeOutStartMS === undefined ?
                 0 :
-                this.fadeOutStartMS / 1000 * sampleRate;
+                this.originalBuffer.length - this.fadeOutStartMS / 1000 * sampleRate;
 
+            // End frame calculated from audio ending.
             const endFrame = this.fadeOutEndMS === undefined ?
                 this.originalBuffer.length :
-                this.fadeOutEndMS / 1000 * sampleRate;
+                this.originalBuffer.length - this.fadeOutEndMS / 1000 * sampleRate;
 
             fadeOutFader = new Fader(startFrame, endFrame, false);
         }
