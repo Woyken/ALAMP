@@ -14,7 +14,7 @@ export class Fader {
     ): Promise<void> {
         const fadeFrameCount = this.endFrame - this.startFrame;
         for (let i = this.startFrame; i < this.startFrame + fadeFrameCount; i++) {
-            if (nonBlocking && i % 500) {
+            if (nonBlocking && i % 500 === 0) {
                 // Every once in a while yeld
                 await timeoutFor(0);
             }
