@@ -6,32 +6,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: npm test
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
-      with:
-        args: test -- --coverage
     - name: npm install
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      uses: actions/npm@master
       with:
         args: install
     - name: npm run build
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      uses: actions/npm@master
       with:
         args: run build
-    - name: tag
-      uses: actions/bin/filter@master
+    - name: npm run lint
+      uses: actions/npm@master
       with:
-        args: tag
+        args: run lint
+    - name: npm test
+      uses: actions/npm@master
+      with:
+        args: test -- --coverage
     - name: npm run codecov
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      uses: actions/npm@master
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         args: run codecov -- --token="$CODECOV_TOKEN"
-    - name: npm run lint
-      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+    - name: tag
+      uses: actions/bin/filter@master
       with:
-        args: run lint
+        args: tag
     - name: npm publish
       uses: actions/npm@master
       env:
