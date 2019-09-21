@@ -4,7 +4,7 @@ window.AudioBuffer = jest.fn((options: AudioBufferOptions) => {
     return { length: options.length, duration: options.length / options.sampleRate } as any;
 });
 
-test('BufferManipulator should save cut position', () => {
+test('BufferManipulator cut should accept only valid arguments', () => {
     const audioBuffer = new AudioBuffer({
         length: 44000 * 1,
         numberOfChannels: 1,
@@ -13,13 +13,16 @@ test('BufferManipulator should save cut position', () => {
     const bufferManipulator = new BufferManipulations(audioBuffer);
 
     // Start out of buffer.
-    expect(bufferManipulator.cut(-1, 200))
+    expect(bufferManipulator.cut(-1))
         .toBe(false);
     // End out of buffer
-    expect(bufferManipulator.cut(0, 1100))
+    expect(bufferManipulator.cut(undefined, 1100))
         .toBe(false);
     // Both out of buffer
     expect(bufferManipulator.cut(-10, 1100))
+        .toBe(false);
+    // Start is earlier than end
+    expect(bufferManipulator.cut(500, 400))
         .toBe(false);
     // Both in buffer should succeed
     expect(bufferManipulator.cut(0, 200))
