@@ -33,3 +33,25 @@ test('Fader apply linear face ascending and descending', async () => {
             .toBeGreaterThan(nextScale);
     }
 });
+
+test('Fader should work in asynchronous way', async () => {
+    const testArray = new Float32Array(700);
+    for (let i = 0; i < testArray.length; i++) {
+        testArray[i] = 1;
+    }
+
+    const fader = new Fader(0, 700);
+
+    const resultPromise = fader.applyLinearFade(testArray, true);
+
+    // Array values near end should stay unchanged right now.
+    expect(testArray[650])
+        .toEqual(1);
+
+    await resultPromise;
+
+    // Now it should be processed.
+    expect(testArray[650])
+        .not
+        .toEqual(1);
+});
