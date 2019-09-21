@@ -1,8 +1,8 @@
 on: push
-name: Build on push
+name: Build and publish on push
 jobs:
-  npmTest:
-    name: npm test
+  npmBuildTestPublish:
+    name: Build, test, lint and publish
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -10,29 +10,26 @@ jobs:
       uses: actions/npm@master
       with:
         args: install
-    - name: npm run build
+    - name: build
       uses: actions/npm@master
       with:
         args: run build
-    - name: npm run lint
+    - name: run linting checks
       uses: actions/npm@master
       with:
         args: run lint
-    - name: npm test
+    - name: run tests
       uses: actions/npm@master
       with:
         args: test -- --coverage
-    - name: npm run codecov
+    - name: publish code coverage report to codecov
       uses: actions/npm@master
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       with:
         args: run codecov -- --token="$CODECOV_TOKEN"
-    - name: tag
-      uses: actions/bin/filter@master
-      with:
-        args: tag
-    - name: npm publish
+    - name: npm publish (if tag was created)
+      if: startsWith(github.ref, 'refs/tags/')
       uses: actions/npm@master
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
