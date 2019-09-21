@@ -76,6 +76,10 @@ export class BufferManipulations {
             }
         }
 
+        if (startMS !== undefined && endMS !== undefined && startMS > endMS) {
+            return false;
+        }
+
         this.fadeInStartMS = startMS;
         this.fadeInEndMS = endMS;
 
@@ -109,6 +113,10 @@ export class BufferManipulations {
             if (!this.isWithinBuffer(endMS)) {
                 return false;
             }
+        }
+
+        if (startMS !== undefined && endMS !== undefined && startMS > endMS) {
+            return false;
         }
 
         this.fadeOutStartMS = startMS;
