@@ -1,0 +1,40 @@
+on: push
+name: Build on push
+jobs:
+  npmTest:
+    name: npm test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: npm test
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: test -- --coverage
+    - name: npm install
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: install
+    - name: npm run build
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: run build
+    - name: tag
+      uses: actions/bin/filter@master
+      with:
+        args: tag
+    - name: npm run codecov
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      with:
+        args: run codecov -- --token="$CODECOV_TOKEN"
+    - name: npm run lint
+      uses: actions/npm@59b64a598378f31e49cb76f27d6f3312b582f680
+      with:
+        args: run lint
+    - name: npm publish
+      uses: actions/npm@master
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      with:
+        args: publish--access public
