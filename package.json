@@ -9,7 +9,7 @@
     "dist/**/*d.ts"
   ],
   "scripts": {
-    "test": "echo \"Not yet implemented, TODO\" && exit 1",
+    "test": "jest",
     "build": "tsc",
     "build:watch": "tsc -w"
   },
@@ -37,6 +37,9 @@
     "lamejs": "^1.2.0"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
     "tslint": "^5.20.0",
     "tslint-config-airbnb": "^5.11.2",
     "typescript": "^3.6.3"
