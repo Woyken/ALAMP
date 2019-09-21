@@ -1,5 +1,7 @@
 # Another lite audio manipulation project (ALAMP)
 
+[![codecov](https://codecov.io/gh/Woyken/ALAMP/branch/master/graph/badge.svg)](https://codecov.io/gh/Woyken/ALAMP)
+
 ## Disclaimer
 
 Only works in browser.
