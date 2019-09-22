@@ -1,5 +1,6 @@
 import { timeoutFor } from './timeoutHelper';
 import { Fader } from './fader';
+import { audioBufferHelper } from './audioBufferHelper';
 
 export enum FadeType {
     /**
@@ -126,6 +127,14 @@ export class BufferManipulations {
     }
 
     /**
+     * Normalize audio volume.
+     * @param normalize should audio be normalized.
+     */
+    public normalizeVolume(normalize: boolean): void {
+        this.normalize = normalize;
+    }
+
+    /**
      * Apply effects (fade and cut) to the buffer.
      * @param nonBlocking Enable non blocking workflow. Will work in batches, yelding in between.
      */
@@ -198,6 +207,8 @@ export class BufferManipulations {
                 await fadeOutFader.applyLinearFade(workingFloatBuffer, nonBlocking);
             }
 
+            await audioBufferHelper.normalizeBufferVolume(workingFloatBuffer, !this.normalize);
+
             wipAudioBuffer.copyToChannel(workingFloatBuffer, channel, 0);
             if (nonBlocking) {
                 // After each significant action, yeld.
@@ -213,6 +224,7 @@ export class BufferManipulations {
     private fadeInEndMS?: number;
     private fadeOutStartMS?: number;
     private fadeOutEndMS?: number;
+    private normalize: boolean = false;
 
     private isWithinBuffer(timeMS: number): boolean {
         const audioDurationMS = this.originalBuffer.duration * 1000;
