@@ -1,6 +1,6 @@
 {
   "name": "alamp",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Another lite audio manipulation project (ALAMP), relatively small package for audio cutting and fade effects",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
