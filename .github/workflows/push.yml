@@ -34,4 +34,4 @@ jobs:
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       with:
-        args: publish--access public
+        args: publish --access public
