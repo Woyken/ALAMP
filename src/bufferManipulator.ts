@@ -155,13 +155,13 @@ export class BufferManipulations {
         let fadeInFader: Fader | undefined;
         if (this.fadeInStartMS !== undefined || this.fadeInEndMS !== undefined) {
 
-            const startFrame = this.fadeInStartMS === undefined ?
+            const startFrame = Math.trunc(this.fadeInStartMS === undefined ?
                 0 :
-                this.fadeInStartMS / 1000 * sampleRate;
+                this.fadeInStartMS / 1000 * sampleRate);
 
-            const endFrame = this.fadeInEndMS === undefined ?
+            const endFrame = Math.trunc(this.fadeInEndMS === undefined ?
                 frameCount :
-                this.fadeInEndMS / 1000 * sampleRate;
+                this.fadeInEndMS / 1000 * sampleRate);
 
             fadeInFader = new Fader(startFrame, endFrame);
         }
@@ -170,14 +170,14 @@ export class BufferManipulations {
         if (this.fadeOutStartMS !== undefined || this.fadeOutEndMS !== undefined) {
 
             // Start frame calculated from audio ending.
-            const startFrame = this.fadeOutStartMS === undefined ?
+            const startFrame = Math.trunc(this.fadeOutStartMS === undefined ?
                 0 :
-                frameCount - this.fadeOutStartMS / 1000 * sampleRate;
+                frameCount - this.fadeOutStartMS / 1000 * sampleRate);
 
             // End frame calculated from audio ending.
-            const endFrame = this.fadeOutEndMS === undefined ?
+            const endFrame = Math.trunc(this.fadeOutEndMS === undefined ?
                 frameCount :
-                frameCount - this.fadeOutEndMS / 1000 * sampleRate;
+                frameCount - this.fadeOutEndMS / 1000 * sampleRate);
 
             fadeOutFader = new Fader(startFrame, endFrame, false);
         }
